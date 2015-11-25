@@ -314,15 +314,21 @@ void func2(dispatch_queue_t queue, dispatch_block_t block){
     dispatch_group_t group = dispatch_group_create();
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
+    NSMutableArray *copyArray = [[NSMutableArray alloc] initWithArray:array copyItems:YES];
+    
     for (int  i = 0; i < array.count; i ++) {
         
         dispatch_group_enter(group);
         
         dispatch_async(queue, ^{
             
+            
+            
+            NSLog(@"process = %@",[NSProcessInfo processInfo]);
+            
             NSString *obj = [array objectAtIndex:i];
             NSNumber *number = [NSNumber numberWithInteger:[obj integerValue]];
-            [array replaceObjectAtIndex:i withObject:number];
+            [copyArray replaceObjectAtIndex:i withObject:number];
         });
         
         dispatch_group_leave(group);
